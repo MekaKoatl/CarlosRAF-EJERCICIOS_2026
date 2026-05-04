@@ -1,6 +1,10 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+
 const app = express();
 
+
+app.use(cors());
 
 const animales = [
   { nombre: 'Rex', edad: 3, tipo: 'T.Mex' },
@@ -38,5 +42,17 @@ app.get('/dejar-animal', (req, res) => {
   `);
 });
 
-// Iniciar servidor
-app.listen(3000);
+app.get('/adoptar', (req, res) => {
+ const name = req.query.nombre;
+  console.log(name)
+
+  for (let i = 0; i < animales.length; i++) {
+    if (name == animales[i].nombre) {
+      //   result.push(animales[i])
+      animales.splice(i, 1);
+    }
+  }
+  res.send(animales);
+});
+
+app.listen(process.env.PORT || 3000);
