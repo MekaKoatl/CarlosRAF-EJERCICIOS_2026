@@ -19,4 +19,14 @@ const persona = [
   { nombre: "Salma", apellido: "Amlas", edad: 22, nacionalidad: "ESP" },
 ];
 
+app.get('/personas', (req, res) => {
+  res.json(persona);
+});
+
+app.post('/personas', (req, res) => {
+  const nPersona = req.body;
+  persona.push(nPersona);
+  res.json(persona);
+});
+
 app.listen(process.env.PORT || 3000);
