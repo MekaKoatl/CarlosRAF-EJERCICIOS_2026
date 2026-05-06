@@ -23,10 +23,17 @@ app.get('/personas', (req, res) => {
   res.json(persona);
 });
 
-app.post('/personas', (req, res) => {
+app.post('/NUEVpersonas', (req, res) => {
   const nPersona = req.body;
   persona.push(nPersona);
   res.json(persona);
 });
+
+app.post('/MODpersonas', (req, res) => {
+  const mPersona = req.body;
+  persona.push(mPersona);
+  res.json(persona);
+});
+
 
 app.listen(process.env.PORT || 3000);
