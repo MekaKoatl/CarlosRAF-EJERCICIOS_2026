@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Personas</title>
+  </head>
+  <body>
+    <ul id="lista"></ul>
+
+    <form id="form">
+      <input type="text" id="nombre" placeholder="Nombre" />
+      <input type="text" id="apellido" placeholder="Apellido" />
+      <input type="number" id="edad" placeholder="Edad" />
+      <input type="text" id="nacionalidad" placeholder="ESP" />
+      <button type="button" onclick="agregarPersona()">Añadir</button>
+    </form>
+
+    <script>
+      fetch("http://localhost:3000/personas")
+        .then((res) => res.json())
+        .then((data) => {
+          const lista = document.getElementById("lista");
+          data.forEach((p) => {
+            const li = document.createElement("li");
+            li.textContent = `${p.nombre} ${p.apellido} - ${p.edad} años - ${p.nacionalidad}`;
+            lista.appendChild(li);
+          });
+        });
+
+      function agregarPersona() {
+        const nuevaPersona = {
+          nombre: document.getElementById("nombre").value,
+          apellido: document.getElementById("apellido").value,
+          edad: Number(document.getElementById("edad").value),
+          nacionalidad: document.getElementById("nacionalidad").value,
+        };
+
+        fetch("http://localhost:3000/personas", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nuevaPersona),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            const lista = document.getElementById("lista");
+            lista.innerHTML = "";
+            data.forEach((p) => {
+              const li = document.createElement("li");
+              li.textContent = `${p.nombre} ${p.apellido} - ${p.edad} años - ${p.nacionalidad}`;
+              lista.appendChild(li);
+            });
+          });
+      }
+    </script>
+  </body>
+</html>
