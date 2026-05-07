@@ -3,13 +3,10 @@ import cors from "cors";
 
 const app = express();
 
-app.use(express.static("public"));
+app.use(express.static("../app"));
 app.use(cors());
-
-//----------------------
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-//----------------------
 
 const persona = [
   { nombre: "Carlos", apellido: "V", edad: 26, nacionalidad: "MXN" },
@@ -29,11 +26,24 @@ app.post('/NUEVpersonas', (req, res) => {
   res.json(persona);
 });
 
-app.post('/MODpersonas', (req, res) => {
-  const mPersona = req.body;
-  persona.push(mPersona);
+app.put('/MODpersonas', (req, res) => {
+  const { nombre, apellido, edad, nacionalidad } = req.body;
+  const index = persona.findIndex(p => p.nombre === nombre);
+
+  
+
+  persona[index] = { nombre, apellido, edad, nacionalidad };
   res.json(persona);
 });
 
+app.delete('/personas/:nombre', (req, res) => {
+  const nombre = req.params.nombre;
+  const index = persona.findIndex(p => p.nombre === nombre);
+
+  
+
+  persona.splice(index, 1);
+  res.json(persona);
+});
 
 app.listen(process.env.PORT || 3000);

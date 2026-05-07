@@ -3,7 +3,7 @@ const express = require("express")
 let app = express ()
 
 app.get("/", (req, res) =>{
-    res.send("<h1>Hola Mundo</h1><p>Desde Express</p>")
+    res.send("Hola Mundo. Desde Express")
 })
 
-app.listen(3001)
+app.listen(3000)

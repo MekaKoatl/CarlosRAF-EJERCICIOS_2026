@@ -7,7 +7,7 @@ app.get("/random/:max", (req, res) => {
 
   const randomNumber = Math.floor(Math.random() * max) + 1;
 
-  res.json({
+  res.send({
     max,
     random: randomNumber,
   });

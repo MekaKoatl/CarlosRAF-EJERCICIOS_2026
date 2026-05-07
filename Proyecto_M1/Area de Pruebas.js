@@ -138,8 +138,8 @@ function buildCard(pokemon, isCenter) {
 
   //Esto define tamaño
   const sizeClass = isCenter
-    ? "w-36 h-36 sm:w-48 sm:h-48 bg-gray-200 shadow-xl scale-110"
-    : "w-28 h-28 sm:w-36 sm:h-36 bg-gray-100 opacity-60";
+    ? "w-50 h-50 sm:w-48 sm:h-48 bg-gray-200 shadow-xl scale-110"
+    : "w-28 h-28 sm:w-50 sm:h-50 bg-gray-100 opacity-60";
 
   //Esta siguiente parte genera el card y lo "renderiza"
   const card = document.createElement("div");
@@ -186,7 +186,7 @@ async function slideNext() {
   newCard.classList.add("opacity-0");
   track.appendChild(newCard);
 
-  // Tamaño de carta
+  // Ingresa la carta en el carousel
   const cardWidth = track.children[0].offsetWidth;
   const gap = 24;
   const slideDistance = cardWidth + gap;
@@ -206,15 +206,15 @@ async function slideNext() {
       const isCenter = i === CENTER_INDEX;
       card.className = card.className
         .replace(
-          /w-36|w-28|h-36|h-28|sm:w-48|sm:h-48|sm:w-36|sm:h-36|bg-gray-200|bg-gray-100|shadow-xl|scale-110|opacity-60/g,
+          /w-50|w-28|h-50|h-28|sm:w-48|sm:h-48|sm:w-50|sm:h-50|bg-gray-200|bg-gray-100|shadow-xl|scale-110|opacity-60/g,
           "",
         )
         .trim();
       card.classList.add(
         ...(isCenter
           ? [
-              "w-36",
-              "h-36",
+              "w-50",
+              "h-50",
               "sm:w-48",
               "sm:h-48",
               "bg-gray-200",
@@ -224,8 +224,8 @@ async function slideNext() {
           : [
               "w-28",
               "h-28",
-              "sm:w-36",
-              "sm:h-36",
+              "sm:w-50",
+              "sm:h-50",
               "bg-gray-100",
               "opacity-60",
             ]),
@@ -255,7 +255,7 @@ async function slideNext() {
 // });
 
 // Auto-play
-setInterval(slideNext, 10000);
+setInterval(slideNext, 5000);
 
 // Init
 initCarousel();

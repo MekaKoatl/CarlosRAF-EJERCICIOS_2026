@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 
 const persona = {
-  nombre: 'Kamilo',
-  apellidos: 'Topinski',
-  edad: 25
+  nombre: '',
+  apellidos: '',
+  edad: ''
 };
 
 app.get('/nombre/:valor', (req, res) => {
@@ -22,4 +22,4 @@ app.get('/edad/:valor', (req, res) => {
   res.send(persona);
 });
 
-app.listen(3000, () => console.log('Servidor en puerto 3000'));
+app.listen(3000)

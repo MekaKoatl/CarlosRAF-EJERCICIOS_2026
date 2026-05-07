@@ -31,6 +31,24 @@ app.get('/sumar-animal', (req, res) => {
   res.send(`Animal añadido: ${nombre}`);
 });
 
+app.get("/animales", (req, res) => {
+  res.send(animales);
+});
+
+app.get("/sumar-animal", (req, res) => {
+  const nombre = req.query.nombre;
+  const tipo = req.query.tipo;
+  const edad = parseInt(req.query.edad);
+
+  animales.push({
+    nombre: nombre,
+    edad: edad,
+    tipo: tipo,
+  });
+
+  res.send(animales);
+});
+
 app.get('/dejar-animal', (req, res) => {
   res.send(`
     <form action="/sumar-animal" method="GET">

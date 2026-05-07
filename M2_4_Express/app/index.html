@@ -11,21 +11,37 @@
       <input type="text" id="nombre" placeholder="Nombre" />
       <input type="text" id="apellido" placeholder="Apellido" />
       <input type="number" id="edad" placeholder="Edad" />
-      <input type="text" id="nacionalidad" placeholder="ESP" />
+      <input type="text" id="nacionalidad" placeholder="Nacionalidad" />
       <button type="button" onclick="agregarPersona()">Añadir</button>
     </form>
 
+    <div id="formMod">
+      <input type="text" id="modNombre" placeholder="Nombre a modificar" />
+      <input type="text" id="modApellido" placeholder="Nuevo apellido" />
+      <input type="number" id="modEdad" placeholder="Nueva edad" />
+      <input type="text" id="modNacionalidad" placeholder="Nueva nacionalidad" />
+      <button type="button" onclick="modificarPersona()">Modificar</button>
+    </div>
+
+    <div id="formDel">
+      <input type="text" id="delNombre" placeholder="Nombre a eliminar" />
+      <button type="button" onclick="eliminarPersona()">Eliminar</button>
+    </div>
+
     <script>
+      function actualizarLista(data) {
+        const lista = document.getElementById("lista");
+        lista.innerHTML = "";
+        data.forEach((p) => {
+          const li = document.createElement("li");
+          li.textContent = `${p.nombre} ${p.apellido} - ${p.edad} años - ${p.nacionalidad}`;
+          lista.appendChild(li);
+        });
+      }
+
       fetch("http://localhost:3000/personas")
         .then((res) => res.json())
-        .then((data) => {
-          const lista = document.getElementById("lista");
-          data.forEach((p) => {
-            const li = document.createElement("li");
-            li.textContent = `${p.nombre} ${p.apellido} - ${p.edad} años - ${p.nacionalidad}`;
-            lista.appendChild(li);
-          });
-        });
+        .then((data) => actualizarLista(data));
 
       function agregarPersona() {
         const nuevaPersona = {
@@ -35,21 +51,40 @@
           nacionalidad: document.getElementById("nacionalidad").value,
         };
 
-        fetch("http://localhost:3000/personas", {
+        fetch("http://localhost:3000/NUEVpersonas", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(nuevaPersona),
         })
           .then((res) => res.json())
-          .then((data) => {
-            const lista = document.getElementById("lista");
-            lista.innerHTML = "";
-            data.forEach((p) => {
-              const li = document.createElement("li");
-              li.textContent = `${p.nombre} ${p.apellido} - ${p.edad} años - ${p.nacionalidad}`;
-              lista.appendChild(li);
-            });
-          });
+          .then((data) => actualizarLista(data));
+      }
+
+      function modificarPersona() {
+        const personaMod = {
+          nombre: document.getElementById("modNombre").value,
+          apellido: document.getElementById("modApellido").value,
+          edad: Number(document.getElementById("modEdad").value),
+          nacionalidad: document.getElementById("modNacionalidad").value,
+        };
+
+        fetch("http://localhost:3000/MODpersonas", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(personaMod),
+        })
+          .then((res) => res.json())
+          .then((data) => actualizarLista(data));
+      }
+
+      function eliminarPersona() {
+        const nombre = document.getElementById("delNombre").value;
+
+        fetch(`http://localhost:3000/personas/${nombre}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => actualizarLista(data));
       }
     </script>
   </body>

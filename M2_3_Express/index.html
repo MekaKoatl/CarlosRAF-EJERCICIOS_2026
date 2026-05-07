@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .card {
+        border: 1px solid #000;
+        background: #fde;
+        padding: 0.2rem;
+        margin: 0.2rem;
+        max-width: 10rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header></header>
+    <main>
+      <div id="lista-animales"></div>
+    </main>
+    <footer></footer>
+
+    <script>
+      fetch("http://localhost:3000/animales")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          document.getElementById("lista-animales").innerHTML = data
+            .map(
+              (animal) =>
+                `<div class="card">
+                <p>Nombre: ${animal.nombre}</p>
+                <p>Edad: ${animal.edad}</p>
+                <p>Tipo: ${animal.tipo}</p>
+                <button onclick="adopt('${animal.nombre}')">adoptar</button>
+                </div>`,
+            )
+            .join("");
+        });
+
+      function adopt(name) {
+        console.log(name);
+        fetch(`http://localhost:3000/adoptar?nombre=${name}`)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+          });
+      }
+    </script>
+  </body>
+</html>
