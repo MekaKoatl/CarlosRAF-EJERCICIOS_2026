@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-const PORT = 3000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const uri = `mongodb://admin:admin123@127.0.0.1:27017`;
 const { MongoClient } = require("mongodb");
 let db;
@@ -31,8 +31,8 @@ app.get("/mesas", async (req, res) => {
   res.send(mesas);
 });
 
-app.post("/annadir", async (req, res) => {
-  let data = req.body.data;
-  await db.collection("tables").insertOne({ data: data });
-  res.send({ data });
+app.post("/api/annadir", async (req, res) => {
+  let mesa = req.body;
+  await db.collection("tables").insertOne(mesa);
+  res.send({ message: "Mesa añadida", mesa });
 });

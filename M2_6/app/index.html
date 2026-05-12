@@ -27,6 +27,24 @@
       <button onclick="sendData()">send data</button>
     </div>
 
+    <div>
+      <input type="text" id="nueva-mesa" placeholder="Nombre de la mesa" />
+      <button onclick="annadirMesa()">Añadir mesa</button>
+    </div>
+
+    <script>
+      function annadirMesa() {
+        let mesa = document.getElementById("nueva-mesa").value;
+        fetch("http://localhost:3000/api/annadir", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre: mesa }),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+      }
+    </script>
+
     <script>
       function send() {
         const data = document.getElementById("data").value;
@@ -46,8 +64,8 @@
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            data: getData
-          })
+            data: getData,
+          }),
         })
           .then((res) => res.json())
           .then((data) => {
