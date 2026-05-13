@@ -52,15 +52,21 @@ app.post("/api/nuevoLibro/:titulo/:estatus", async (req, res) => {
   res.send({ message: "Libro añadido", libros });
 });
 
-app.put("/api/editarLibro/:titulo/:estatus", async (req, res) => {
+app.put("/api/editarLibro/:titulo", async (req, res) => {
   let titulo = req.params.titulo;
-  let estatus = req.params.estatus;
-  let libros = await db2
+  const response = await db2
     .collection("libros")
-    .find({ titulo: titulo })
-    .toArray();
-  await db.collection("libros").updateOne({titulo}, { $set: { estatus: estatus } });
-   res.send({ message: "Estatus de libro modificado", libros });
+    .updateOne(
+      { titulo: titulo, estatus: "sin leer" },
+      { $set: { estatus: "leído" } },
+    );
+  res.send({ message: `Libro "${titulo}" marcado como leído`, response });
+});
+
+app.delete("/api/borrarLibro/:titulo", async (req, res) => {
+  let titulo = req.params.titulo;
+  const response = await db2.collection("libros").deleteOne({ titulo: titulo });
+  res.send({ message: `Libro "${titulo}" borrado`, response });
 });
 
 app.get("/mesas", async (req, res) => {
@@ -76,11 +82,13 @@ app.post("/api/annadir", async (req, res) => {
 
 app.put("/api/modificar/:color", async (req, res) => {
   let color = req.params.color;
-  await db.collection("tables").updateMany({}, { $set: { color: color } });
+  const response = await db
+    .collection("tables")
+    .updateMany({ color: color }, { $set: { color: "granate" } });
   res.send(response);
 });
 
-app.put("/api/borrar/:patas", async (req, res) => {
+app.delete("/api/borrar/:patas", async (req, res) => {
   let patas = parseInt(req.params.patas);
   const response = await db.collection("tables").deleteMany({ patas: patas });
   res.send(response);
