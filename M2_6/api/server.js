@@ -40,7 +40,7 @@ app.get("/api/libros/:titulo", async (req, res) => {
     .collection("libros")
     .find({ titulo: titulo })
     .toArray();
-  res.send(libros);
+  res.send({data: libros});
 });
 
 app.post("/api/nuevoLibro/:titulo/:estatus", async (req, res) => {
@@ -52,25 +52,31 @@ app.post("/api/nuevoLibro/:titulo/:estatus", async (req, res) => {
   res.send({ message: "Libro añadido", libros });
 });
 
-app.put("/api/editarLibro/:titulo", async (req, res) => {
+app.put("/api/editarLibro/:titulo/:estatus", async (req, res) => {
   let titulo = req.params.titulo;
+  let estatus = req.params.estatus;
   const response = await db2
     .collection("libros")
     .updateOne(
-      { titulo: titulo, estatus: "sin leer" },
-      { $set: { estatus: "leído" } },
+      { titulo: titulo },
+      { $set: { estatus: estatus } }
     );
-  res.send({ message: `Libro "${titulo}" marcado como leído`, response });
+  res.send({ message: `Estatus de "${titulo}" actualizado a "${estatus}"`, data: response });
 });
 
 app.delete("/api/borrarLibro/:titulo", async (req, res) => {
   let titulo = req.params.titulo;
   const response = await db2.collection("libros").deleteOne({ titulo: titulo });
-  res.send({ message: `Libro "${titulo}" borrado`, response });
+  res.send({ message: `Libro "${titulo}" borrado`, data: response });
 });
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
 app.get("/mesas", async (req, res) => {
-  let mesas = await db.collection("tables").find().toArray();
+  let mesas = await db.coleccion("tables").find().toArray();
   res.send(mesas);
 });
 
@@ -90,6 +96,6 @@ app.put("/api/modificar/:color", async (req, res) => {
 
 app.delete("/api/borrar/:patas", async (req, res) => {
   let patas = parseInt(req.params.patas);
-  const response = await db.collection("tables").deleteMany({ patas: patas });
+  const response =  db.collection("tables").deleteMany({ patas: patas });
   res.send(response);
 });

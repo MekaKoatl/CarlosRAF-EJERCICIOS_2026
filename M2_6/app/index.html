@@ -12,7 +12,7 @@
     </style>
   </head>
   <body>
-    <form action="http://localhost:3000/data" method="get">
+    <!-- <form action="http://localhost:3000/data" method="get">
       <input type="text" name="data1" />
       <button type="submit">send</button>
     </form>
@@ -25,26 +25,81 @@
     <div id="post">
       <input type="text" id="post-data" />
       <button onclick="sendData()">send data</button>
-    </div>
+    </div> -->
+    <!---------------------------------------------------------------------------------------------------------------->
+    <main>
+      <div id="Libros"></div>
+    </main>
+
+    <div id="lista-mesas"></div>
+    <button onclick="getMesas()">Ver mesas</button>
 
     <div>
-      <input type="text" id="nueva-mesa" placeholder="Nombre de la mesa" />
+      <input
+        type="text"
+        id="tamanno"
+        placeholder="Tamaño de la mesa, ej: 8x10"
+      />
+      <input type="text" id="color" placeholder="Café" />
+      <input type="text" id="material" placeholder="Madera" />
+      <input type="number" id="patas" placeholder="4" />
       <button onclick="annadirMesa()">Añadir mesa</button>
     </div>
 
     <script>
+      url = "http://localhost:3000";
+
+      function mostrarLibros() {
+        document.getElementById("Libros").innerHTML = "";
+        fetch(`${url}/api/libros`)
+          .then((res) => res.json())
+          .then((data) => {
+            data.forEach((libro) => {
+              document.getElementById("Libros").innerHTML +=
+                `<div><h3>${libro.titulo}</h3><h4>${libro.estatus}</h4></div>`;
+            });
+          });
+      }
+
+      mostrarLibros();
+
+      function cambiarEstado(titulo) {
+        fetch();
+      }
+    </script>
+
+    <script>
+      function getMesas() {
+        fetch("http://localhost:3000/mesas")
+          .then((res) => res.json())
+          .then((data) => {
+            let html = data
+              .map((mesa) => `<p>${JSON.stringify(mesa)}</p>`)
+              .join("");
+            document.getElementById("lista-mesas").innerHTML = html;
+          });
+      }
+    </script>
+    <script>
       function annadirMesa() {
-        let mesa = document.getElementById("nueva-mesa").value;
+        let mesa_tamanno = document.getElementById("tamanno").value;
+        let mesa_color = document.getElementById("color").value;
+        let mesa_material = document.getElementById("material").value;
+        let mesa_number = document.getElementById("patas").value;
         fetch("http://localhost:3000/api/annadir", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nombre: mesa }),
+          body: JSON.stringify({
+            tamanno: mesa_tamanno,
+            color: mesa_color,
+            material: mesa_material,
+            patas: mesa_number,
+          }),
         })
           .then((res) => res.json())
           .then((data) => console.log(data));
       }
     </script>
-
     <script>
       function send() {
         const data = document.getElementById("data").value;
