@@ -1,6 +1,9 @@
-let express = require("express");
-const cors = require("cors");
-const { MongoClient } = require("mongodb");
+// let express = require("express");
+import express from "express";
+// const cors = require("cors");
+import cors from "cors";
+// const { MongoClient } = require("mongodb");
+import { MongoClient } from "mongodb";
 
 const app = express();
 app.use(cors());
@@ -10,14 +13,17 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const uri = `mongodb://admin:admin123@127.0.0.1:27017`;
-let db, db2, db3;
+// const uri = `mongodb+srv://solracraf_db_user:cizVZqDhlJX2C2cf@cluster0.8x41v4f.mongodb.net/?appName=Cluster0`;
+
+let db, db2, db3, db4;
 
 async function start() {
   try {
     const client = await MongoClient.connect(uri);
     db = client.db("store");
     db2 = client.db("libros");
-    db3 = client.db("TV");
+    db3 = client.db("series");
+    db4 = client.db("restaurante");
     console.log("Connected to MongoDB");
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (err) {
@@ -26,17 +32,25 @@ async function start() {
 }
 start();
 
+//Menus
+app.get("/api/menus", async (req, res) => {
+  let menus = await db4.collection("restaurante").find().toArray();
+  res.send(menus);
+});
+
 // SERIES
 app.get("/api/series", async (req, res) => {
   let series = await db3.collection("series").find().toArray();
   res.send(series);
 });
 
-app.get("/api/serie", async (req, res) => {
-  let titulo = req.query.titulo;
-  let serie = await db3.collection("series").findOne({ titulo });
-  if (!serie) return res.status(404).send({ message: "Serie no encontrada" });
-  res.send(serie);
+app.get("/api/series/:titulo", async (req, res) => {
+  let titulo = req.params.titulo;
+  let series = await db3
+    .collection("series")
+    .find({ Titulo: titulo })
+    .toArray();
+  res.send({ series });
 });
 
 // LIBROS
@@ -83,7 +97,9 @@ app.post("/api/annadir", async (req, res) => {
 
 app.put("/api/modificar/:color", async (req, res) => {
   let color = req.params.color;
-  const response = await db.collection("tables").updateMany({ color }, { $set: { color: "granate" } });
+  const response = await db
+    .collection("tables")
+    .updateMany({ color }, { $set: { color: "granate" } });
   res.send(response);
 });
 
