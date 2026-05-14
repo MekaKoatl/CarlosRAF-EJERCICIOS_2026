@@ -5,41 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .post {
-        padding: 1rem;
-        border: 1px solid black;
-      }
+      .post { padding: 1rem; border: 1px solid black; }
     </style>
   </head>
   <body>
-    <!-- <form action="http://localhost:3000/data" method="get">
-      <input type="text" name="data1" />
-      <button type="submit">send</button>
-    </form>
 
+    <!-- SERIES -->
+    <div id="series"></div>
+    <button onclick="getSeries()">Ver todas las series</button>
     <div>
-      <input type="text" id="data" />
-      <button onclick="send()">send</button>
+      <input type="text" id="buscar-serie" placeholder="Nombre de la serie" />
+      <button onclick="buscarSerie()">Buscar serie</button>
     </div>
+    <div id="resultado-serie"></div>
 
-    <div id="post">
-      <input type="text" id="post-data" />
-      <button onclick="sendData()">send data</button>
-    </div> -->
-    <!---------------------------------------------------------------------------------------------------------------->
+    <!-- LIBROS -->
     <main>
       <div id="Libros"></div>
     </main>
 
+    <!-- MESAS -->
     <div id="lista-mesas"></div>
     <button onclick="getMesas()">Ver mesas</button>
-
     <div>
-      <input
-        type="text"
-        id="tamanno"
-        placeholder="Tamaño de la mesa, ej: 8x10"
-      />
+      <input type="text" id="tamanno" placeholder="Tamaño de la mesa, ej: 8x10" />
       <input type="text" id="color" placeholder="Café" />
       <input type="text" id="material" placeholder="Madera" />
       <input type="number" id="patas" placeholder="4" />
@@ -47,86 +36,82 @@
     </div>
 
     <script>
-      url = "http://localhost:3000";
+      const url = "http://localhost:3000";
 
+      // SERIES
+      function getSeries() {
+        fetch(`${url}/api/series`)
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("series").innerHTML = data
+              .map(s => `<div><h3>${s.titulo}</h3><p>Puntuación: ${s.puntuacion}</p><p>${s.notas}</p></div>`)
+              .join("");
+          });
+      }
+
+      function buscarSerie() {
+        let titulo = document.getElementById("buscar-serie").value;
+        fetch(`${url}/api/serie?titulo=${encodeURIComponent(titulo)}`)
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("resultado-serie").innerHTML = data.message
+              ? `<p>${data.message}</p>`
+              : `<div><h3>${data.titulo}</h3><p>Puntuación: ${data.puntuacion}</p><p>${data.notas}</p></div>`;
+          });
+      }
+
+      // LIBROS
       function mostrarLibros() {
         document.getElementById("Libros").innerHTML = "";
         fetch(`${url}/api/libros`)
-          .then((res) => res.json())
-          .then((data) => {
-            data.forEach((libro) => {
+          .then(res => res.json())
+          .then(data => {
+            data.forEach(libro => {
               document.getElementById("Libros").innerHTML +=
-                `<div><h3>${libro.titulo}</h3><h4>${libro.estatus}</h4></div>`;
+                `<div>
+                  <h3>${libro.titulo}</h3>
+                  <h4>${libro.estatus}</h4>
+                  <button onclick="cambiarEstado('${libro.titulo}', '${libro.estatus}')">Cambiar estado</button>
+                </div>`;
             });
           });
       }
 
+      function cambiarEstado(titulo, estadoActual) {
+        let nuevoEstado = estadoActual === "leído" ? "pendiente" : "leído";
+        fetch(`${url}/api/editarLibro/${encodeURIComponent(titulo)}/${nuevoEstado}`, { method: "PUT" })
+          .then(res => res.json())
+          .then(() => mostrarLibros());
+      }
+
       mostrarLibros();
 
-      function cambiarEstado(titulo) {
-        fetch();
-      }
-    </script>
-
-    <script>
+      // MESAS
       function getMesas() {
-        fetch("http://localhost:3000/mesas")
-          .then((res) => res.json())
-          .then((data) => {
-            let html = data
-              .map((mesa) => `<p>${JSON.stringify(mesa)}</p>`)
+        fetch(`${url}/mesas`)
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("lista-mesas").innerHTML = data
+              .map(mesa => `<p>${JSON.stringify(mesa)}</p>`)
               .join("");
-            document.getElementById("lista-mesas").innerHTML = html;
           });
       }
-    </script>
-    <script>
+
       function annadirMesa() {
-        let mesa_tamanno = document.getElementById("tamanno").value;
-        let mesa_color = document.getElementById("color").value;
-        let mesa_material = document.getElementById("material").value;
-        let mesa_number = document.getElementById("patas").value;
-        fetch("http://localhost:3000/api/annadir", {
+        fetch(`${url}/api/annadir`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            tamanno: mesa_tamanno,
-            color: mesa_color,
-            material: mesa_material,
-            patas: mesa_number,
+            tamanno: document.getElementById("tamanno").value,
+            color: document.getElementById("color").value,
+            material: document.getElementById("material").value,
+            patas: document.getElementById("patas").value,
           }),
         })
-          .then((res) => res.json())
-          .then((data) => console.log(data));
+          .then(res => res.json())
+          .then(data => console.log(data));
       }
     </script>
-    <script>
-      function send() {
-        const data = document.getElementById("data").value;
-        fetch(`http://localhost:3000/data?data1=${data}`)
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-          });
-      }
 
-      function sendData() {
-        let getData = document.getElementById("post-data").value;
-        console.log(getData);
-        fetch("http://localhost:3000/post-data", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: getData,
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-          });
-      }
-    </script>
   </body>
 </html>
