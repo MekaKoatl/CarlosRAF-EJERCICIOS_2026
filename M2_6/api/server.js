@@ -32,11 +32,11 @@ async function start() {
 }
 start();
 
-//Menus
-app.get("/api/menus", async (req, res) => {
-  let menus = await db4.collection("restaurante").find().toArray();
-  res.send(menus);
-});
+// //Menus
+// app.get("/api/menus", async (req, res) => {
+//   let menus = await db4.collection("restaurante").find().toArray();
+//   res.send(menus);
+// });
 
 // SERIES
 app.get("/api/series", async (req, res) => {
@@ -107,4 +107,31 @@ app.delete("/api/borrar/:patas", async (req, res) => {
   let patas = parseInt(req.params.patas);
   const response = await db.collection("tables").deleteMany({ patas });
   res.send(response);
+});
+
+///Restaurante
+app.get("/api/menus", async (req, res) => {
+  let menus = await db4.collection("menus").find().toArray();
+  res.send(menus);
+});
+
+app.post("/api/nuevoMenu", async (req, res) => {
+  let menu = req.body;
+  await db4.collection("menus").insertOne(menu);
+  res.send({ message: "Menú añadido", menu });
+});
+
+app.put("/api/editarMenu", async (req, res) => {
+  let { numero, primerPlato, segundoPlato, postre, precio } = req.body;
+  const response = await db4.collection("menus").updateOne(
+    { numero: numero },
+    { $set: { primerPlato, segundoPlato, postre, precio } }
+  );
+  res.send({ message: `Menú ${numero} actualizado`, response });
+});
+
+app.delete("/api/borrarMenu", async (req, res) => {
+  let { numero } = req.body;
+  const response = await db4.collection("menus").deleteOne({ numero: numero });
+  res.send({ message: `Menú ${numero} borrado`, response });
 });

@@ -1,117 +1,219 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .post { padding: 1rem; border: 1px solid black; }
-    </style>
-  </head>
-  <body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de datos</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #1a1a2e; min-height: 100vh; padding: 1.5rem; color: #e0e0e0; }
+    .section { background: #16213e; border: 0.5px solid #0f3460; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+    .section-title { font-size: 13px; font-weight: 500; color: #7b8cde; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+    .card { background: #0f3460; border-radius: 10px; padding: 1rem; border: 0.5px solid #1a4a7a; }
+    .card h3 { font-size: 15px; font-weight: 500; color: #e0e0e0; margin-bottom: 4px; }
+    .card p { font-size: 13px; color: #9aafc7; margin-bottom: 2px; }
+    .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; margin-top: 6px; }
+    .badge-pendiente { background: #3a2a0f; color: #f0a500; }
+    .badge-leido { background: #0a3020; color: #4caf82; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1rem; }
+    input[type="text"], input[type="number"] { background: #0f3460; border: 0.5px solid #1a4a7a; border-radius: 8px; color: #e0e0e0; padding: 8px 12px; font-size: 14px; outline: none; }
+    input::placeholder { color: #4a6080; }
+    input:focus { border-color: #7b8cde; }
+    button { background: #7b8cde22; border: 0.5px solid #7b8cde; border-radius: 8px; color: #7b8cde; padding: 8px 14px; font-size: 14px; cursor: pointer; }
+    button:hover { background: #7b8cde33; }
+    .mesa-item { background: #0f3460; border: 0.5px solid #1a4a7a; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #9aafc7; }
+    .mesa-item span { color: #e0e0e0; font-weight: 500; }
+    .empty { color: #4a6080; font-size: 13px; font-style: italic; }
+    .star { color: #f0a500; }
+    h2 { font-size: 20px; font-weight: 500; color: #7b8cde; margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body>
+  <h2>Panel de datos</h2>
 
-    <!-- SERIES -->
-    <div id="series"></div>
-    <button onclick="getSeries()">Ver todas las series</button>
-    <div>
-      <input type="text" id="buscar-serie" placeholder="Nombre de la serie" />
-      <button onclick="buscarSerie()">Buscar serie</button>
+  <div class="section">
+    <div class="section-title">Series</div>
+    <div class="row">
+      <button onclick="getSeries()">Ver todas</button>
+      <input type="text" id="buscar-serie" placeholder="Buscar serie..." style="flex:1; min-width:140px;" />
+      <button onclick="buscarSerie()">Buscar</button>
     </div>
     <div id="resultado-serie"></div>
+    <div id="series" class="card-grid"></div>
+  </div>
 
-    <!-- LIBROS -->
-    <main>
-      <div id="Libros"></div>
-    </main>
+  <div class="section">
+    <div class="section-title">Libros</div>
+    <div id="Libros" class="card-grid"></div>
+  </div>
 
-    <!-- MESAS -->
-    <div id="lista-mesas"></div>
-    <button onclick="getMesas()">Ver mesas</button>
-    <div>
-      <input type="text" id="tamanno" placeholder="Tamaño de la mesa, ej: 8x10" />
-      <input type="text" id="color" placeholder="Café" />
-      <input type="text" id="material" placeholder="Madera" />
-      <input type="number" id="patas" placeholder="4" />
-      <button onclick="annadirMesa()">Añadir mesa</button>
+  <div class="section">
+    <div class="section-title">Mesas</div>
+    <button onclick="getMesas()" style="margin-bottom:1rem;">Ver mesas</button>
+    <div id="lista-mesas" style="display:flex; flex-direction:column; gap:8px;"></div>
+    <div class="row" style="margin-top:1rem;">
+      <input type="text" id="tamanno" placeholder="Tamaño, ej: 8x10" style="flex:1; min-width:100px;" />
+      <input type="text" id="color" placeholder="Color" style="flex:1; min-width:80px;" />
+      <input type="text" id="material" placeholder="Material" style="flex:1; min-width:80px;" />
+      <input type="number" id="patas" placeholder="Patas" style="width:80px;" />
+      <button onclick="annadirMesa()">Añadir</button>
     </div>
+  </div>
 
-    <script>
-      const url = "http://localhost:3000";
+  <div class="section">
+  <div class="section-title">Menús</div>
 
-      // SERIES
-      function getSeries() {
-        fetch(`${url}/api/series`)
-          .then(res => res.json())
-          .then(data => {
-            document.getElementById("series").innerHTML = data
-              .map(s => `<div><h3>${s.titulo}</h3><p>Puntuación: ${s.puntuacion}</p><p>${s.notas}</p></div>`)
-              .join("");
-          });
-      }
+  <button onclick="getMenus()" style="margin-bottom:1rem;">Ver menús</button>
+  <div id="lista-menus" class="card-grid"></div>
 
-      function buscarSerie() {
-        let titulo = document.getElementById("buscar-serie").value;
-        fetch(`${url}/api/serie?titulo=${encodeURIComponent(titulo)}`)
-          .then(res => res.json())
-          .then(data => {
-            document.getElementById("resultado-serie").innerHTML = data.message
-              ? `<p>${data.message}</p>`
-              : `<div><h3>${data.titulo}</h3><p>Puntuación: ${data.puntuacion}</p><p>${data.notas}</p></div>`;
-          });
-      }
+  <div class="section-title" style="margin-top:1.5rem;">Añadir menú</div>
+  <div class="row">
+    <input type="number" id="m-numero" placeholder="Nº menú" style="width:90px;" />
+    <input type="text" id="m-primero" placeholder="Primer plato" style="flex:1;" />
+    <input type="text" id="m-segundo" placeholder="Segundo plato" style="flex:1;" />
+    <input type="text" id="m-postre" placeholder="Postre" style="flex:1;" />
+    <input type="number" id="m-precio" placeholder="Precio €" style="width:90px;" />
+    <button onclick="nuevoMenu()">Añadir</button>
+  </div>
 
-      // LIBROS
-      function mostrarLibros() {
-        document.getElementById("Libros").innerHTML = "";
-        fetch(`${url}/api/libros`)
-          .then(res => res.json())
-          .then(data => {
-            data.forEach(libro => {
-              document.getElementById("Libros").innerHTML +=
-                `<div>
-                  <h3>${libro.titulo}</h3>
-                  <h4>${libro.estatus}</h4>
-                  <button onclick="cambiarEstado('${libro.titulo}', '${libro.estatus}')">Cambiar estado</button>
-                </div>`;
-            });
-          });
-      }
+  <div class="section-title" style="margin-top:1.5rem;">Editar menú</div>
+  <div class="row">
+    <input type="number" id="e-numero" placeholder="Nº menú a editar" style="width:120px;" />
+    <input type="text" id="e-primero" placeholder="Primer plato" style="flex:1;" />
+    <input type="text" id="e-segundo" placeholder="Segundo plato" style="flex:1;" />
+    <input type="text" id="e-postre" placeholder="Postre" style="flex:1;" />
+    <input type="number" id="e-precio" placeholder="Precio €" style="width:90px;" />
+    <button onclick="editarMenu()">Guardar</button>
+  </div>
+</div>
 
-      function cambiarEstado(titulo, estadoActual) {
-        let nuevoEstado = estadoActual === "leído" ? "pendiente" : "leído";
-        fetch(`${url}/api/editarLibro/${encodeURIComponent(titulo)}/${nuevoEstado}`, { method: "PUT" })
-          .then(res => res.json())
-          .then(() => mostrarLibros());
-      }
+  <script>
+    const url = "http://localhost:3000";
 
-      mostrarLibros();
+    function getSeries() {
+      fetch(`${url}/api/series`).then(r => r.json()).then(data => {
+        document.getElementById("resultado-serie").innerHTML = "";
+        document.getElementById("series").innerHTML = data.length
+          ? data.map(s => `<div class="card"><h3>${s.titulo}</h3><p><span class="star">★</span> ${s.puntuacion ?? "—"}</p><p>${s.notas ?? ""}</p></div>`).join("")
+          : `<p class="empty">No hay series.</p>`;
+      });
+    }
 
-      // MESAS
-      function getMesas() {
-        fetch(`${url}/mesas`)
-          .then(res => res.json())
-          .then(data => {
-            document.getElementById("lista-mesas").innerHTML = data
-              .map(mesa => `<p>${JSON.stringify(mesa)}</p>`)
-              .join("");
-          });
-      }
+    function buscarSerie() {
+      const titulo = document.getElementById("buscar-serie").value.trim();
+      if (!titulo) return;
+      fetch(`${url}/api/serie?titulo=${encodeURIComponent(titulo)}`).then(r => r.json()).then(data => {
+        document.getElementById("series").innerHTML = "";
+        document.getElementById("resultado-serie").innerHTML = data.message
+          ? `<p class="empty">${data.message}</p>`
+          : `<div class="card"><h3>${data.titulo}</h3><p><span class="star">★</span> ${data.puntuacion ?? "—"}</p><p>${data.notas ?? ""}</p></div>`;
+      });
+    }
 
-      function annadirMesa() {
-        fetch(`${url}/api/annadir`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            tamanno: document.getElementById("tamanno").value,
-            color: document.getElementById("color").value,
-            material: document.getElementById("material").value,
-            patas: document.getElementById("patas").value,
-          }),
+    function mostrarLibros() {
+      fetch(`${url}/api/libros`).then(r => r.json()).then(data => {
+        document.getElementById("Libros").innerHTML = data.length
+          ? data.map(l => `<div class="card"><h3>${l.titulo}</h3><span class="badge badge-${l.estatus === 'leído' ? 'leido' : 'pendiente'}">${l.estatus}</span><br><button onclick="cambiarEstado('${l.titulo}','${l.estatus}')" style="margin-top:10px; font-size:12px; padding:4px 10px;">Cambiar estado</button></div>`).join("")
+          : `<p class="empty">No hay libros.</p>`;
+      });
+    }
+
+    function cambiarEstado(titulo, estadoActual) {
+      let nuevoEstado = estadoActual === "leído" ? "pendiente" : "leído";
+      fetch(`${url}/api/editarLibro/${encodeURIComponent(titulo)}/${nuevoEstado}`, { method: "PUT" })
+        .then(r => r.json()).then(() => mostrarLibros());
+    }
+
+    function getMesas() {
+      fetch(`${url}/mesas`).then(r => r.json()).then(data => {
+        document.getElementById("lista-mesas").innerHTML = data.length
+          ? data.map(m => `<div class="mesa-item"><span>${m.tamanno}</span> · ${m.color} · ${m.material} · <span>${m.patas} patas</span></div>`).join("")
+          : `<p class="empty">No hay mesas.</p>`;
+      });
+    }
+
+    function annadirMesa() {
+      fetch(`${url}/api/annadir`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tamanno: document.getElementById("tamanno").value,
+          color: document.getElementById("color").value,
+          material: document.getElementById("material").value,
+          patas: document.getElementById("patas").value,
         })
-          .then(res => res.json())
-          .then(data => console.log(data));
-      }
-    </script>
+      }).then(r => r.json()).then(() => {
+        getMesas();
+        ["tamanno","color","material","patas"].forEach(id => document.getElementById(id).value = "");
+      });
+    }
 
-  </body>
+    mostrarLibros();
+
+    // MENÚS
+function getMenus() {
+  fetch(`${url}/api/menus`)
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById("lista-menus").innerHTML = data.length
+        ? data.map(m => `
+            <div class="card">
+              <h3>Menú ${m.numero}</h3>
+              <p>🥗 ${m.primerPlato}</p>
+              <p>🍖 ${m.segundoPlato}</p>
+              <p>🍮 ${m.postre}</p>
+              <p style="color:#f0a500; margin-top:6px; font-weight:500;">${m.precio} €</p>
+              <button onclick="borrarMenu(${m.numero})" style="margin-top:10px; font-size:12px; padding:4px 10px; border-color:#c0392b; color:#c0392b;">
+                Borrar
+              </button>
+            </div>`).join("")
+        : `<p class="empty">No hay menús.</p>`;
+    });
+}
+
+function nuevoMenu() {
+  fetch(`${url}/api/nuevoMenu`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      numero: parseInt(document.getElementById("m-numero").value),
+      primerPlato: document.getElementById("m-primero").value,
+      segundoPlato: document.getElementById("m-segundo").value,
+      postre: document.getElementById("m-postre").value,
+      precio: parseFloat(document.getElementById("m-precio").value),
+    })
+  }).then(r => r.json()).then(() => {
+    getMenus();
+    ["m-numero","m-primero","m-segundo","m-postre","m-precio"].forEach(id => document.getElementById(id).value = "");
+  });
+}
+
+function editarMenu() {
+  fetch(`${url}/api/editarMenu`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      numero: parseInt(document.getElementById("e-numero").value),
+      primerPlato: document.getElementById("e-primero").value,
+      segundoPlato: document.getElementById("e-segundo").value,
+      postre: document.getElementById("e-postre").value,
+      precio: parseFloat(document.getElementById("e-precio").value),
+    })
+  }).then(r => r.json()).then(() => {
+    getMenus();
+    ["e-numero","e-primero","e-segundo","e-postre","e-precio"].forEach(id => document.getElementById(id).value = "");
+  });
+}
+
+function borrarMenu(numero) {
+  fetch(`${url}/api/borrarMenu`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ numero })
+  }).then(r => r.json()).then(() => getMenus());
+}
+  </script>
+</body>
 </html>
