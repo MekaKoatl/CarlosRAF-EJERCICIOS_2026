@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="esp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba Hotel</title>
+  </head>
+  <body>
+    <div>
+      <h2>Registrate</h2>
+      <div class="row" style="margin-top: 1rem">
+        <input
+          type="text"
+          id="nombre"
+          placeholder="Jorge"
+          style="flex: 1; min-width: 80px"
+        />
+        <input
+          type="text"
+          id="apellido"
+          placeholder="Rubio"
+          style="flex: 1; min-width: 80px"
+        />
+        <input
+          type="text"
+          id="numdoc"
+          placeholder="Material"
+          style="flex: 1; min-width: 80px"
+        />
+        <button onclick="registrarCliente()">Registrar</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Habitaciones</h2>
+      <div id="Habitaciones" class="card-grid"></div>
+    </div>
+
+    <script>
+      const url = "http://localhost:3000";
+
+      function registrarCliente() {
+        fetch(`${url}/registrar`)
+          .then((r) => r.json())
+          .then((data) => {
+            document.getElementById("nombre").innerHTML = "";
+            document.getElementById("apellido").innerHTML = "";
+            document.getElementById("numdoc").innerHTML = "";
+          });
+      }
+    </script>
+  </body>
+</html>
