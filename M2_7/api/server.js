@@ -4,13 +4,16 @@ import { MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import clientesRouter from "./dbs_routers/clientes.js"
 import habitacionesRouter from "./dbs_routers/habitaciones.js";
+import reservasRouter from "./dbs_routers/reservas.js";
 
 // import pruebauser from './pruebauser.js'
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use("/api/clientes", clientesRouter);
 app.use("/api/habitaciones", habitacionesRouter);
+app.use("/api/reservas", reservasRouter);
 // app.use(pruebauser)
 
 const PORT = process.env.PORT || 3000;
@@ -39,4 +42,3 @@ app.get('', (req, res) => {
   res.send('Carlos dice Hola')
 })
 
-app.use("/api/clientes", clientesRouter);

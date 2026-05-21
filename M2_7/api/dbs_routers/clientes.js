@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
   res.send({ data: clients });
 });
 
-// POST /api/clientes/registrar
+
 router.post("/registrar", async (req, res) => {
   const { nombre, apellido, numdoc } = req.body;
 
@@ -30,7 +30,7 @@ router.post("/registrar", async (req, res) => {
   res.status(201).send({ message: "Cliente registrado correctamente" });
 });
 
-// PUT /api/clientes/editar/:numdoc
+
 router.put("/editar/:numdoc", async (req, res) => {
   const numdoc = req.params.numdoc;
   const { nombre, apellido } = req.body;
