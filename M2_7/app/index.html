@@ -1,53 +1,103 @@
 <!doctype html>
-<html lang="esp">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prueba Hotel</title>
-  </head>
-  <body>
-    <div>
-      <h2>Registrate</h2>
-      <div class="row" style="margin-top: 1rem">
-        <input
-          type="text"
-          id="nombre"
-          placeholder="Jorge"
-          style="flex: 1; min-width: 80px"
-        />
-        <input
-          type="text"
-          id="apellido"
-          placeholder="Rubio"
-          style="flex: 1; min-width: 80px"
-        />
-        <input
-          type="text"
-          id="numdoc"
-          placeholder="Material"
-          style="flex: 1; min-width: 80px"
-        />
-        <button onclick="registrarCliente()">Registrar</button>
-      </div>
-    </div>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    h2 { margin-top: 1.5rem; }
+    .card { border: 1px solid #ccc; padding: 0.5rem; margin: 0.5rem 0; border-radius: 6px; }
+    .disponible { color: green; }
+    .ocupado { color: red; }
+    input { margin: 4px; padding: 6px; }
+    button { padding: 6px 12px; cursor: pointer; }
+  </style>
+</head>
+<body>
 
-    <div class="section">
-      <h2>Habitaciones</h2>
-      <div id="Habitaciones" class="card-grid"></div>
-    </div>
+  <h1>Hotel Dashboard</h1>
 
-    <script>
-      const url = "http://localhost:3000";
+  <h2>Registrar cliente</h2>
+  <input type="text" id="nombre" placeholder="Nombre" />
+  <input type="text" id="apellido" placeholder="Apellido" />
+  <input type="text" id="numdoc" placeholder="DNI / Pasaporte" />
+  <button onclick="registrarCliente()">Registrar</button>
+  <p id="msg-cliente"></p>
 
-      function registrarCliente() {
-        fetch(`${url}/registrar`)
-          .then((r) => r.json())
-          .then((data) => {
-            document.getElementById("nombre").innerHTML = "";
-            document.getElementById("apellido").innerHTML = "";
-            document.getElementById("numdoc").innerHTML = "";
-          });
-      }
-    </script>
-  </body>
+  <h2>Clientes</h2>
+  <div id="lista-clientes"></div>
+
+  <h2>Habitaciones</h2>
+  <div id="lista-habitaciones"></div>
+
+  <h2>Reservas</h2>
+  <div id="lista-reservas"></div>
+
+  <script>
+    const url = "http://localhost:3000";
+
+    function registrarCliente() {
+      fetch(`${url}/api/clientes/registrar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: document.getElementById("nombre").value,
+          apellido: document.getElementById("apellido").value,
+          numdoc: document.getElementById("numdoc").value,
+        })
+      }).then(r => r.json()).then(data => {
+        document.getElementById("msg-cliente").textContent = data.message;
+        document.getElementById("nombre").value = "";
+        document.getElementById("apellido").value = "";
+        document.getElementById("numdoc").value = "";
+        getClientes();
+      });
+    }
+
+    function getClientes() {
+      fetch(`${url}/api/clientes`).then(r => r.json()).then(data => {
+        const clientes = data.data || [];
+        document.getElementById("lista-clientes").innerHTML = clientes.length
+          ? clientes.map(c => `<div class="card">${c.nombre} ${c.apellido} — ${c.numdoc}</div>`).join("")
+          : "<p>No hay clientes.</p>";
+      });
+    }
+
+    function getHabitaciones() {
+      fetch(`${url}/api/habitaciones`).then(r => r.json()).then(data => {
+        const habs = data.data || [];
+        document.getElementById("lista-habitaciones").innerHTML = habs.length
+          ? habs.map(h => `<div class="card">
+              Hab. ${h.roomnum} — <span class="${h.estado}">${h.estado}</span>
+              ${h.estado === "ocupado" ? `<button onclick="checkout(${h.roomnum})">Checkout</button>` : ""}
+            </div>`).join("")
+          : "<p>No hay habitaciones.</p>";
+      });
+    }
+
+    function checkout(roomnum) {
+      fetch(`${url}/api/habitaciones/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roomnum })
+      }).then(r => r.json()).then(() => getHabitaciones());
+    }
+
+    function getReservas() {
+      fetch(`${url}/api/reservas`).then(r => r.json()).then(data => {
+        const reservas = data.data || [];
+        document.getElementById("lista-reservas").innerHTML = reservas.length
+          ? reservas.map(r => `<div class="card">
+              ${r.client} — Hab. ${r.habitacion} | Check-in: ${r.checkin} | Check-out: ${r.checkout}
+            </div>`).join("")
+          : "<p>No hay reservas.</p>";
+      });
+    }
+
+    getClientes();
+    getHabitaciones();
+    getReservas();
+  </script>
+</body>
 </html>

@@ -3,12 +3,15 @@ import cors from "cors";
 import { MongoClient } from "mongodb";
 import bcrypt from "bcrypt";
 import clientesRouter from "./dbs_routers/clientes.js"
-import pruebauser from './pruebauser.js'
+import habitacionesRouter from "./dbs_routers/habitaciones.js";
+
+// import pruebauser from './pruebauser.js'
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(pruebauser)
+app.use("/api/habitaciones", habitacionesRouter);
+// app.use(pruebauser)
 
 const PORT = process.env.PORT || 3000;
 const uri = "mongodb://admin:admin123@127.0.0.1:27017";
@@ -26,9 +29,9 @@ async function start() {
     console.error("Mongo error:", err);
   }
 }
-const client = await MongoClient.connect(uri)
+// const client = await MongoClient.connect(uri)
 // app.locals.db = client.db('store')
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
 start();
 

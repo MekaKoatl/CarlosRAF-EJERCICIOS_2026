@@ -39,18 +39,18 @@ router.post("/checkin", async (req, res) => {
         checkin: data.checkin,
         checkout: data.checkout,
       });
- 
+
     const dataRoom = await req.app.locals.db
       .collection("habitaciones")
       .updateOne(
-        { numero: roomFound.roomnum },
+        { roomnum: data.roomnum },
         { $set: { estado: "ocupado" } },
       );
 
     response = "El cliente esta registrado, y habitación disponible";
   }
 
-  res.send({ data: "response" });
+  res.send({ data: response });
 });
 
 export default router;
