@@ -1,0 +1,17 @@
+.MovieList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 24px;
+}
+
+.Card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 200px;
+}
+
+.Card img {
+  width: 100%;
+}
