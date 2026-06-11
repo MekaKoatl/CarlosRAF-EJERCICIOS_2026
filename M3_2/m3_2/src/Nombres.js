@@ -11,6 +11,7 @@ export function Nombres() {
   return (
     <div>
       <h1>{nombres[index]}</h1>
+      <br />
       <button onClick={siguiente}>Siguiente</button>
     </div>
   );

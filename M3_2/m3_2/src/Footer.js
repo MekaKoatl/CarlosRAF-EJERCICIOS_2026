@@ -6,7 +6,9 @@ export function Footer({ libros }) {
   return (
     <footer>
       <h2>Libro en oferta</h2>
-      <Libro libro={libroOferta} />
+      <div className="libro_footer" >
+        <Libro libro={libroOferta} />
+      </div>
     </footer>
   );
 }

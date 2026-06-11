@@ -10,7 +10,7 @@ import { LibroList } from "./LibroList";
 import { Footer } from "./Footer";
 import "./App.css";
 
-const evento = {
+let evento = {
   nombre: "Salsa dance party",
   fecha: "24/07/2020",
   hora: "16:00",
@@ -20,23 +20,64 @@ const evento = {
   },
 };
 
+let muelle = {
+  nombre: "Puerto deportivo",
+  barcos: [
+    {
+      nombre: "bar quito",
+      eslora: "5m",
+      tripulantes: 2,
+    },
+    {
+      nombre: "imperioso",
+      eslora: "12m",
+      tripulantes: 3,
+    },
+  ],
+
+  contacto: {
+    telefono: "94463827",
+  },
+};
+
 function App() {
-  const [usuario, setUsuario] = useState(libreria.usuario);
+  let [usuario, setUsuario] = useState(libreria.usuario);
+
   function toggleVip() {
     setUsuario({ ...usuario, vip: !usuario.vip });
   }
+
   return (
     <div>
-      <Header usuario={usuario} onToggleVip={toggleVip} />
+      <Header usuario={usuario} onToggleVip={toggleVip} muelle={muelle}/>
       <EventCard evento={evento} />
-      <Lista />
+      <hr />
+      <br />
+      <Lista muelle={muelle}/>
+      <br />
+      <hr />
+      <br />
       <Coche color="Rojo" />
+      <br />
       <Coche color="Azul" />
-      <LibroList libros={libreria.libros} />
+      <br />
       <Coche color="Negro" />
+      <br />
       <Coche color="Blanco" />
-      <Contador />
+      <br />
+      <hr />
+      <br />
       <Nombres />
+      <br />
+      <hr />
+      <br />
+      <Contador />
+      <br />
+      <hr />
+      <br />
+      <LibroList libros={libreria.libros} />
+      <br />
+
       <Footer libros={libreria.libros} />
     </div>
   );

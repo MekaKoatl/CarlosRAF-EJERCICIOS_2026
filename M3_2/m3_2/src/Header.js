@@ -1,4 +1,4 @@
-export function Header({ usuario, onToggleVip }) {
+export function Header({ usuario, onToggleVip, muelle }) {
   return (
     <header>
       <img src={usuario.imagen} alt={usuario.nombre} width={60} />
@@ -9,6 +9,11 @@ export function Header({ usuario, onToggleVip }) {
       <button onClick={onToggleVip}>
         {usuario.vip ? "Quitar VIP" : "Hacer VIP"}
       </button>
+      <hr />
+      <br />
+      <h3>{muelle.nombre}</h3>
+      <br />
+      <hr />
     </header>
   );
 }

@@ -7,7 +7,7 @@
 body {
   background-color: #121212;
   color: #e0e0e0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* ---- SECCIONES DE EJERCICIOS ---- */
@@ -94,11 +94,13 @@ ul li {
 }
 
 /* ---- CONTADOR Y NOMBRES ---- */
-.Contador, .Nombres {
+.Contador,
+.Nombres {
   text-align: center;
 }
 
-.Contador p, .Nombres h1 {
+.Contador p,
+.Nombres h1 {
   font-size: 2rem;
   margin-bottom: 12px;
 }
@@ -107,14 +109,14 @@ ul li {
 main {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 25px;
   justify-content: center;
 }
 
 .Libro {
   background-color: #1e1e1e;
   border-radius: 10px;
-  width: 220px;
+  width: 15%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -122,8 +124,9 @@ main {
 
 .Libro img {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
+  height: 100%;
+  max-height: 30rem;
+  object-fit: contain;
 }
 
 .Libro h1 {
@@ -142,11 +145,11 @@ main {
   font-size: 0.75rem;
   color: #757575;
   padding: 0 12px 8px;
-  line-height: 1.4;
+  line-height: 2;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 10;
   -webkit-box-orient: vertical;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .Libro button {
@@ -166,10 +169,11 @@ main {
 
 /* ---- FOOTER ---- */
 footer {
-  background-color: #1e1e1e;
+  background-color: #333333;
   border-top: 1px solid #2a2a2a;
   padding: 32px;
   text-align: center;
+  justify-content: center;
 }
 
 footer h2 {
@@ -177,8 +181,10 @@ footer h2 {
   color: #ffd700;
 }
 
-footer main {
+.libro_footer {
+  display: flex;
   justify-content: center;
+  text-align: left;
 }
 
 /* ---- BOTONES GENERALES ---- */
