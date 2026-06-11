@@ -1,17 +1,51 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .MovieList {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  padding: 24px;
+  gap: 20px;
+  padding: 32px;
+  justify-content: center;
 }
 
 .Card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
+  background-color: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
   width: 200px;
+  overflow: hidden;
 }
 
 .Card img {
   width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.Card h3 {
+  font-size: 0.85rem;
+  padding: 10px 12px 4px;
+  color: #ffffff;
+}
+
+.Card p {
+  font-size: 0.75rem;
+  padding: 0 12px 12px;
+  color: #9e9e9e;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
