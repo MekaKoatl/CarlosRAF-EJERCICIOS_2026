@@ -9,7 +9,7 @@ export function Nombres() {
   }
 
   return (
-    <div>
+    <div className="Nombres">
       <h1>{nombres[index]}</h1>
       <br />
       <button onClick={siguiente}>Siguiente</button>

@@ -1,8 +1,8 @@
-export function Lista({ muelle }) {
+export function Lista({ muelle, onAñadir }) {
   const items = ["Manzana", "Plátano", "Naranja"];
 
   return (
-    <div>
+    <div className="Lista">
       <ul>
         {items.map((item, index) => (
           <li key={index}>{item}</li>
@@ -15,6 +15,7 @@ export function Lista({ muelle }) {
         {muelle.barcos.map((barco, index) => (
           <li key={index}>
             {barco.nombre} — {barco.eslora} — {barco.tripulantes} tripulantes
+            <button onClick={() => onAñadir(index)}>+1</button>
           </li>
         ))}
       </ul>
