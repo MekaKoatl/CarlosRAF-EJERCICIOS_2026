@@ -1,5 +1,5 @@
 export function Lista({ muelle, onAñadir }) {
-  const items = ["Manzana", "Plátano", "Naranja"];
+  let items = ["Manzana", "Plátano", "Naranja"];
 
   return (
     <div className="Lista">
@@ -15,7 +15,7 @@ export function Lista({ muelle, onAñadir }) {
         {muelle.barcos.map((barco, index) => (
           <li key={index}>
             {barco.nombre} — {barco.eslora} — {barco.tripulantes} tripulantes
-            <button onClick={() => onAñadir(index)}>+1</button>
+            <button className="buttonli" onClick={() => onAñadir(index)}>+1</button>
           </li>
         ))}
       </ul>

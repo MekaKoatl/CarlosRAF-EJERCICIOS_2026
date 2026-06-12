@@ -1,4 +1,4 @@
-export const libreria = {
+export let libreria = {
   usuario: {
     nombre: "Javier",
     vip: false,

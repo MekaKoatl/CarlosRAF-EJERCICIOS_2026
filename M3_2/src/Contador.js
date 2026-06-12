@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export function Contador() {
-  const [count, setCount] = useState(0);
+  let [count, setCount] = useState(0);
 
   return (
     <div className="Contador">

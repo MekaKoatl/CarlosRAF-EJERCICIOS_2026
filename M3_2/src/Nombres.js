@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export function Nombres() {
-  const nombres = ["Luke", "Carlos", "Cris", "Karla", "Kamilo"];
-  const [index, setIndex] = useState(0);
+  let nombres = ["Luke", "Carlos", "Cris", "Karla", "Kamilo"];
+  let [index, setIndex] = useState(0);
 
   function siguiente() {
     setIndex((index + 1) % nombres.length);

@@ -8,9 +8,10 @@ import { Header } from "./Header";
 import { libreria } from "./libreria";
 import { LibroList } from "./LibroList";
 import { Footer } from "./Footer";
+import Gato from "./Gato";
 import "./App.css";
 
-const evento = {
+let evento = {
   nombre: "Salsa dance party",
   fecha: "24/07/2020",
   hora: "16:00",
@@ -21,8 +22,8 @@ const evento = {
 };
 
 function App() {
-  const [usuario, setUsuario] = useState(libreria.usuario);
-  const [muelle, setMuelle] = useState({
+  let [usuario, setUsuario] = useState(libreria.usuario);
+  let [muelle, setMuelle] = useState({
     nombre: "Puerto deportivo",
     barcos: [
       { nombre: "bar quito", eslora: "5m", tripulantes: 2 },
@@ -36,7 +37,7 @@ function App() {
   }
 
   function añadirTripulante(index) {
-    const nuevosBarcos = muelle.barcos.map((barco, i) =>
+    let nuevosBarcos = muelle.barcos.map((barco, i) =>
       i === index ? { ...barco, tripulantes: barco.tripulantes + 1 } : barco
     );
     setMuelle({ ...muelle, barcos: nuevosBarcos });
@@ -53,7 +54,8 @@ function App() {
     <Nombres />
     <Contador />
     <LibroList libros={libreria.libros} />
-    <Footer libros={libreria.libros} />
+    <Gato />
+    <Footer libros={libreria.libros} muelle={muelle}/>
   </div>
 );
 }

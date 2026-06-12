@@ -76,6 +76,10 @@ ul li {
   margin-bottom: 6px;
 }
 
+.Lista button {
+  margin-left: 20px;
+}
+
 /* ---- COCHES ---- */
 .Coche {
   background-color: #1e1e1e;
@@ -120,13 +124,14 @@ main {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .Libro img {
   width: 100%;
   height: 100%;
   max-height: 30rem;
-  object-fit:cover;
+  object-fit:fill;
 }
 
 .Libro h1 {
