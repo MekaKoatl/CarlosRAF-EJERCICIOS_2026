@@ -1,19 +1,30 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
-import Home from './Home';
-import Nombres from './Nombres';
+import React from "react";
+import "./App.css";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import Home from "./Home";
+import Nombres from "./Nombres";
+import Gatos from "./Gatos";
+import Perros from "./Perros";
+import Equipo from "./Equipo";
+// import JugadorDetalle from "./JugadorDetalle";
 
 function App() {
   return (
-   ( <>
-     <BrowserRouter>
-     <Routes>
-      <Route path='/' element={<Home/>}></Route>
-      <Route path='/nombres' element={<Nombres/>}></Route>
-     </Routes>
-     </BrowserRouter>
-    </>)
+    <BrowserRouter>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/nombres">Nombres</Link> |{" "}
+        <Link to="/gatos">Gatos</Link> | <Link to="/perros">Perros</Link> |{" "}
+        <Link to="/equipo">Equipo</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/nombres" element={<Nombres />} />
+        <Route path="/gatos" element={<Gatos />} />
+        <Route path="/perros" element={<Perros />} />
+        <Route path="/equipo" element={<Equipo />} />
+        {/* <Route path="/jugador/:id" element={<JugadorDetalle />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 

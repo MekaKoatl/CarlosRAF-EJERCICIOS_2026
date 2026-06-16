@@ -1,5 +1,5 @@
 export function Nombres() {
-  let nombres = [
+  const nombres = [
     "Carlos",
     "Luka",
     "Cris",
@@ -10,13 +10,11 @@ export function Nombres() {
   ];
 
   return (
-    <>
-      <ul>
-        {nombres.map(index => (
-            <li key={index}></li>
-        ))}
-      </ul>
-    </>
+    <ul>
+      {nombres.map((nombre, index) => (
+        <li key={index}>{nombre}</li>
+      ))}
+    </ul>
   );
 }
 
