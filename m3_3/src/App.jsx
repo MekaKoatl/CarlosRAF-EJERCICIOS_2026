@@ -8,6 +8,7 @@ import Perros from "./Perros";
 import Equipo from "./Equipo";
 import Listapelis from "./Listapelis";
 import Pelicula from "./Pelicula";
+import Jugador from "./Jugador";
 
 // import JugadorDetalle from "./JugadorDetalle";
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/equipo" element={<Equipo />} />
         <Route path="/listapelis" element={<Listapelis />} />
         <Route path="/pelicula/:id" element={<Pelicula />} />
+        <Route path="/jugador/:id" element={<Jugador />} />
         {/* <Route path="/jugador/:id" element={<JugadorDetalle />} /> */}
       </Routes>
     </BrowserRouter>

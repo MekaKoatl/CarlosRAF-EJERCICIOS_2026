@@ -1,26 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { miembros } from "./Dataequipo";
 
-let equipo = [
-  { id: 1, nombre: "Carlos", posicion: "Base"},
-  { id: 2, nombre: "Luka", posicion: "Escolta"},
-  { id: 3, nombre: "Sara", posicion: "Alero"},
-  { id: 4, nombre: "Kamilo", posicion: "Delantero"},
-  { id: 5, nombre: "Karla", posicion: "Portero"},
-];
+export default function Equipo() {
+  let [equipo] = useState(miembros);
 
-
-export function Equipo() {
   return (
     <div>
       <h2>Equipo</h2>
-      {equipo.map((j) => (
-        <div key={j.id}>
-          <p>#{j.dorsal} {j.nombre} — {j.posicion}</p>
+      {equipo.map((e) => (
+        <div key={e.id}>
+          <p>#{e.id} {e.nombre} — {e.posicion}</p>
+          <Link to={`/jugador/${e.id}`}>Más info</Link>
         </div>
       ))}
     </div>
   );
 }
-
-
-export default Equipo;
