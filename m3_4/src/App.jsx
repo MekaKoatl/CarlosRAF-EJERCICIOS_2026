@@ -1,19 +1,43 @@
-import React from "react";
-import "./App.css";
-import { useState } from "react";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
-
 export default function App() {
-  let [nombre, setNombre] = useState("");
+  const [compositores, setCompositores] = useState([
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Johann Sebastian Bach",
+  ]);
+  const [nombre, setNombre] = useState("");
+  const [mostrar, setMostrar] = useState("");
+  const [borrar, setBorrar] = useState("");
 
-  function cambiarNombre(event) {
-    setNombre(event.target.value);
+  function handleBorrar() {
+    setCompositores(compositores.filter((c) => c !== borrar));
+    setBorrar("");
+  }
+
+  function handleClick() {
+    setCompositores([...compositores, nombre]);
+    setNombre("");
   }
 
   return (
     <div>
-      <input type="text" value={nombre} onChange={cambiarNombre} />
-      <p>{nombre}</p>
+      <ul>
+        {compositores.map((c, index) => (
+          <li key={index}>{c}</li>
+        ))}
+      </ul>
+      <input
+        type="text"
+        value={nombre}
+        onChange={(e) => setNombre(e.target.value)}
+      />
+      <button onClick={handleClick}>Mostrar</button>
+      <p>{mostrar}</p>
+      <input
+        type="text"
+        value={borrar}
+        onChange={(e) => setBorrar(e.target.value)}
+      />
+      <button onClick={handleBorrar}>Eliminar</button>
     </div>
   );
 }
