@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
+import { compositores as datosBase } from "./DataCompositores";
 
 export default function App() {
-  const [compositores, setCompositores] = useState([
-    "Wolfgang Amadeus Mozart",
-    "Ludwig van Beethoven",
-    "Johann Sebastian Bach",
-  ]);
+  const [compositores, setCompositores] = useState(datosBase);
 
   function añadir(nombre) {
     setCompositores([...compositores, nombre]);
