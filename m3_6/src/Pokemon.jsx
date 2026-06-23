@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 function PokemonCard({ url, nombre }) {
-  const [imagen, setImagen] = useState("");
+  let [imagen, setImagen] = useState("");
 
   useEffect(() => {
     fetch(url)
@@ -18,9 +18,9 @@ function PokemonCard({ url, nombre }) {
 }
 
 export default function Pokemon() {
-  const [tipos, setTipos] = useState([]);
-  const [tipoSeleccionado, setTipoSeleccionado] = useState("");
-  const [pokemons, setPokemons] = useState([]);
+  let [tipos, setTipos] = useState([]);
+  let [tipoSeleccionado, setTipoSeleccionado] = useState("");
+  let [pokemons, setPokemons] = useState([]);
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/type")
@@ -33,8 +33,8 @@ export default function Pokemon() {
     fetch(`https://pokeapi.co/api/v2/type/${tipoSeleccionado}`)
       .then((res) => res.json())
       .then((data) => {
-        const lista = data.pokemon.map((p) => p.pokemon);
-        const aleatorios = lista.sort(() => Math.random() - 0.5).slice(0, 3);
+        let lista = data.pokemon.map((p) => p.pokemon);
+        let aleatorios = lista.sort(() => Math.random() - 0.5).slice(0, 3);
         setPokemons(aleatorios);
       });
   }, [tipoSeleccionado]);

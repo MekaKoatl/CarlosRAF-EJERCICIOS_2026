@@ -19,10 +19,12 @@ export default function App() {
   return (
     <div>
       <div className="personajes">
-        {personajesRnM.map((p) => (
+        {personajesRnM.slice(0, 10).map((p) => (
           <div className="personaje" key={p.id}>
             <img src={p.image} alt={p.name} width={100} />
-            <p>{p.name}</p>
+            <p>
+              {p.name} <br /> Species: {p.species} <br /> Status: {p.status} <br />  Origin: {p.origin.name} <br /> Last known Location: {p.location.name}
+            </p>
           </div>
         ))}
       </div>

@@ -8,7 +8,7 @@ export default function StarWars() {
     fetch("https://swapi.info/api/planets")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // revisa en consola la estructura real
+        console.log(data);
         setPlanetas(Array.isArray(data) ? data : data.results);
       });
   }, []);

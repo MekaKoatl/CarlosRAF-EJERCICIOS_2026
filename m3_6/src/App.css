@@ -7,23 +7,23 @@
 body {
   background-color: #121212;
   color: #e0e0e0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .personajes {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   padding: 24px;
-  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .personaje {
   background-color: #1e1e1e;
   border-radius: 10px;
   overflow: hidden;
-  width: 150px;
-  text-align: center;
+  text-align: left;
 }
 
 .personaje img {
@@ -31,9 +31,10 @@ body {
 }
 
 .personaje p {
-  padding: 8px;
-  font-size: 0.85rem;
+  padding: 10px 12px;
+  font-size: 0.78rem;
   color: #9e9e9e;
+  line-height: 1.8;
 }
 
 .paginacion {
