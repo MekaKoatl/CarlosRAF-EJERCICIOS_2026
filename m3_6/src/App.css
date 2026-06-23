@@ -61,3 +61,21 @@ button:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+nav {
+  display: flex;
+  gap: 24px;
+  padding: 12px 24px;
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+nav a {
+  color: #9e9e9e;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+nav a:hover {
+  color: #ffffff;
+}
